@@ -7,16 +7,15 @@ const app = express();
 require("dotenv").config({ path: path.resolve(__dirname, '.env') })
 process.stdin.setEncoding("utf8");
 
-const port = 4000;
 const httpSuccessStatus = 200;
 
 app.set("views", path.resolve(__dirname, "templates"));
-app.listen(port);
+var listener = app.listen(8888, function(){
+    console.log('Listening on port ' + listener.address().port); //Listening on port 8888
+});
 app.set("view engine", "ejs");
 
 
 app.get("/", (request, response) => {
 	response.render("index")
   });
-
-console.log("Server running at localhost:" + port)
