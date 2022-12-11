@@ -1,0 +1,19 @@
+{
+  "name": "golfstats",
+  "version": "1.0.0",
+  "description": "",
+  "main": "golfServer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/frankelsammy/golfStats.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/frankelsammy/golfStats/issues"
+  },
+  "homepage": "https://github.com/frankelsammy/golfStats#readme"
+}
