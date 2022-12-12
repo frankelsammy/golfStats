@@ -100,7 +100,7 @@ app.post("/favorites", (request, response) => {
   favPlayer.forEach((name) => {
     let golfer = {
       lastName: name.toUpperCase(),
-      tourneys: playerTourneys[name]
+      tourneys: playerTourneys[name] ?? ['NONE']
     };
     golfers.push(golfer);
 
@@ -113,6 +113,31 @@ app.post("/favorites", (request, response) => {
   };
 
   response.render("processFavorites.ejs",variables);
+});
+
+app.get("/reset", (request, response) => {
+
+  deleteAll();
+  response.render("processRemove.ejs")
+
+});
+
+app.get("/favorites", (request,response) => {
+  async function getEvents() {
+  let golfers = await retrieveAll()
+  const variables = {
+    table: makeFavoritesTable(golfers),
+    date: Date()
+  };
+  response.render("upcoming.ejs",variables);
+
+
+  }
+  getEvents();
+
+
+
+
 });
 
 async function insertGolfers(client, databaseAndCollection, golfers) {
@@ -144,4 +169,31 @@ async function deleteAll() {
   } finally {
       await client.close();
   }
+}
+
+async function retrieveAll() {
+  try {
+      await client.connect();
+      let filter = {};
+      const cursor = client.db(database.db)
+      .collection(database.collection)
+      .find(filter);
+      
+      return await cursor.toArray();
+      
+  } catch (e) {
+      console.error(e);
+  } finally {
+      await client.close();
+  }
+}
+
+function makeFavoritesTable(golfers) {
+  let res = "<table border='1'>";
+  res+= "<tr><th>Golfer</th><th>Upcoming Events</th>";
+  golfers.forEach((golfer) => {
+    res += `<tr><td>${golfer.lastName}</td><td>${golfer.tourneys.join(",")}</td></tr>`
+  });
+  res+="</table>";
+  return res;
 }

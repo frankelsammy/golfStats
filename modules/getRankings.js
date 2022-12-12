@@ -59,12 +59,6 @@ function makeRankingsTable(rankings) {
 
 
 }
-
-// getUpcomingTournaments({ 'rahm': [], 'smith': [], 'woods': [] }, 372).then((res) => {
-// 	return getUpcomingTournaments(res,373)}).then((res)=>console.log(res));
-
-
-
 module.exports = { getRankingsProm, makeRankingsTable};
 
 
