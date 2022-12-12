@@ -30,7 +30,7 @@ function getRankingsProm() {
 						let player = {
 							name: rankings[i].player_name,
 							rank : rankings[i].position,
-							points: rankings[i].total_points
+							points: rankings[i].points_gained
 						}
 						PGA_RANKINGS.push(player)
 					}
