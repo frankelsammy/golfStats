@@ -9,6 +9,9 @@ process.stdin.setEncoding("utf8");
 
 const httpSuccessStatus = 200;
 
+
+app.use('/static', express.static('static'))
+
 app.set("views", path.resolve(__dirname, "templates"));
 var listener = app.listen(4000, function(){
     console.log('Listening on port ' + listener.address().port); //Listening on port 8888
