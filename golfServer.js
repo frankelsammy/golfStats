@@ -4,7 +4,12 @@ const express = require('express')
 const bodyParser = require("body-parser");
 const { response } = require('express');
 const app = express();
-const mod = require("./modules/getRankings")
+const mod = require("./modules/getRankings");
+const tournaments = require("./modules/getTourneys");
+
+
+let foundTournaments = false
+let playerTourneys = {}
 
 require("dotenv").config({ path: path.resolve(__dirname, '.env') })
 process.stdin.setEncoding("utf8");
@@ -24,6 +29,32 @@ app.set("view engine", "ejs");
 
 
 app.get("/", (request, response) => {
+
+  //Noting upcoming tournamens for players
+  if (!foundTournaments) {
+    let tourneys = {
+      "mcilroy":[],
+      "thomas":[],
+      "scheffler":[],
+      "zalatoris":[],
+      "smith":[],
+      "rahm":[],
+      "spieth":[],
+      "young":[]
+
+    };
+    tournaments.getUpcomingTournaments(tourneys,372).then((res) => {
+      return tournaments.getUpcomingTournaments(res,373);
+    }).then((res) => {return tournaments.getUpcomingTournaments(res,377)}).then((res) => {
+      return tournaments.getUpcomingTournaments(res, 379)
+    }).then((res)=>{
+      playerTourneys = res;
+      console.log(res)});
+    foundTournaments = true
+
+
+
+  }
  
 	response.render("index")
   });

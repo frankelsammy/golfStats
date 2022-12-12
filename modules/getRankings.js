@@ -13,42 +13,42 @@ function getRankingsProm() {
 				"useQueryString": true
 			}
 		};
-		
-			let PGA_RANKINGS = []
-			const req = http.request(options, function (res) {
-				
-				const chunks = [];
 
-				res.on("data", function (chunk) {
-					chunks.push(chunk);
-				});
+		let PGA_RANKINGS = []
+		const req = http.request(options, function (res) {
 
-				res.on("end", function () {
-					const body = Buffer.concat(chunks);
-					const rankings = JSON.parse(body).results.rankings
-					for (let i = 0; i < 50; i++) {
-						let player = {
-							name: rankings[i].player_name,
-							rank : rankings[i].position,
-							points: rankings[i].avg_points
-						}
-						PGA_RANKINGS.push(player)
-					}
-					resolve(PGA_RANKINGS);
-					
-					
-				});
+			const chunks = [];
+
+			res.on("data", function (chunk) {
+				chunks.push(chunk);
 			});
-			
-			
 
-			req.end();
-			
+			res.on("end", function () {
+				const body = Buffer.concat(chunks);
+				const rankings = JSON.parse(body).results.rankings
+				for (let i = 0; i < 50; i++) {
+					let player = {
+						name: rankings[i].player_name,
+						rank: rankings[i].position,
+						points: rankings[i].avg_points
+					}
+					PGA_RANKINGS.push(player)
+				}
+				resolve(PGA_RANKINGS);
+
+
+			});
 		});
 
-		
-	
-	}
+
+
+		req.end();
+
+	});
+
+
+
+}
 function makeRankingsTable(rankings) {
 	let res = "<table border='1'><tr><th>Position</th><th>Name</th><th>Total Points</th></tr>"
 	rankings.forEach(player => {
@@ -59,7 +59,13 @@ function makeRankingsTable(rankings) {
 
 
 }
-module.exports = {getRankingsProm, makeRankingsTable};
+
+// getUpcomingTournaments({ 'rahm': [], 'smith': [], 'woods': [] }, 372).then((res) => {
+// 	return getUpcomingTournaments(res,373)}).then((res)=>console.log(res));
+
+
+
+module.exports = { getRankingsProm, makeRankingsTable};
 
 
 
