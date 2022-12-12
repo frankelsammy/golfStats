@@ -11,6 +11,8 @@ process.stdin.setEncoding("utf8");
 let PGA_RANKINGS = []
 const httpSuccessStatus = 200;
 
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
 
 app.use('/static', express.static('static'))
 
@@ -38,7 +40,11 @@ app.get("/rankings", (request,response) => {
 
 app.get("/selectFavorites", (request, response) => {
   response.render("favorites.ejs")
+});
 
+app.post("/favorites", (request, response) => {
+  let {favPlayer} = request.body;
 
-
+  console.log(favPlayer);
+  response.render("index")
 });
