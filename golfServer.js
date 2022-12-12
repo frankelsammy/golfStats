@@ -56,7 +56,7 @@ app.get("/", (request, response) => {
       return tournaments.getUpcomingTournaments(res, 379)
     }).then((res)=>{
       playerTourneys = res;
-      foundTournaments = true
+      //foundTournaments = true
       }).then(() => response.render("index"))
   } else {
     response.render("index")
