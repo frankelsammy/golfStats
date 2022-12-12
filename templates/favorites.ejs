@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<title>Select Favorites</title>
+
+	<%- include('./style'); %>
+</head>
+
+<body>
+	<h1>SELECT YOUR FAVORITE PLAYERS TO FOLLOW</h1>
+	<form id="favorites" action="/favorites" method="POST"
+		onsubmit="return confirm('Are you sure you want to add these players to your favorites?')" )>
+		
+		<fieldset>
+			
+			<label for="favs">Click which players you would like to add:</label>
+			<select name="favPlayer" id="players" multiple>
+				<option value="mcilroy">Rory McIlroy</option>
+				<option value="thomas">Justin Thomas</option>
+				<option value="scheffler">Scottie Scheffler</option>
+				<option value="zalatoris">Will Zalatoris</option>
+				<option value="smith">Cameron Smith</option>
+				<option value="rahm">John Rahm</option>
+				<option value="spieth">Jordan Spieth</option>
+				<option value="young">Cameron Young</option>
+			</select>
+			<br>
+			<input type="reset"> <input type="submit">
+		</fieldset>
+	</form>
+	<br>
+	<img id="favoritePics" src="/static/rory.jpeg" alt="not found">
+	<img id="favoritePics" src="/static/jt.jpeg" alt="not found">
+	<img id="favoritePics" src="/static/smith.jpeg" alt="not found">
+	<hr>
+	<p><em>Website made by Sammy Frankel</em></p>
+</body>
+
+</html>

@@ -1,6 +1,6 @@
 
 function getRankingsProm() {
-	let prom = new Promise((resolve, reject) => {
+	return new Promise((resolve, reject) => {
 		const http = require("https");
 		const options = {
 			"method": "GET",
@@ -30,7 +30,7 @@ function getRankingsProm() {
 						let player = {
 							name: rankings[i].player_name,
 							rank : rankings[i].position,
-							points: rankings[i].points_gained
+							points: rankings[i].avg_points
 						}
 						PGA_RANKINGS.push(player)
 					}
@@ -48,8 +48,6 @@ function getRankingsProm() {
 
 		
 	
-
-		return prom;
 	}
 function makeRankingsTable(rankings) {
 	let res = "<table border='1'><tr><th>Position</th><th>Name</th><th>Total Points</th></tr>"

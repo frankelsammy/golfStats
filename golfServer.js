@@ -33,10 +33,12 @@ app.get("/rankings", (request,response) => {
       date: Date()
     };
     response.render("rankings.ejs",variables)
-  
-  
-  
-  });
-  
-  
+  });  
+});
+
+app.get("/selectFavorites", (request, response) => {
+  response.render("favorites.ejs")
+
+
+
 });
