@@ -1,4 +1,5 @@
 const http = require('http');
+process.stdin.setEncoding("utf8");
 const path = require("path");
 const express = require('express')
 const bodyParser = require("body-parser");
@@ -6,13 +7,19 @@ const { response } = require('express');
 const app = express();
 const mod = require("./modules/getRankings");
 const tournaments = require("./modules/getTourneys");
-
-
 let foundTournaments = false
 let playerTourneys = {}
-
+const { MongoClient, ServerApiVersion } = require('mongodb');
 require("dotenv").config({ path: path.resolve(__dirname, '.env') })
-process.stdin.setEncoding("utf8");
+
+const userName = process.env.MONGO_DB_USERNAME;
+const password = process.env.MONGO_DB_PASSWORD;
+
+const database = { db: "CMSC335DB", collection: "golfers" };
+const uri = `mongodb+srv://${userName}:${password}@cluster0.zbfrr36.mongodb.net/?retryWrites=true&w=majority`
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
+
+
 let PGA_RANKINGS = []
 const httpSuccessStatus = 200;
 
@@ -49,17 +56,17 @@ app.get("/", (request, response) => {
       return tournaments.getUpcomingTournaments(res, 379)
     }).then((res)=>{
       playerTourneys = res;
-      console.log(res)});
-    foundTournaments = true
-
-
-
+      foundTournaments = true
+      }).then(() => response.render("index"))
+  } else {
+    response.render("index")
   }
- 
-	response.render("index")
-  });
+});
+  
+
 
 app.get("/rankings", (request,response) => {
+  
   mod.getRankingsProm().then((res) =>  {
     const variables = {
       table : mod.makeRankingsTable(res),
@@ -75,7 +82,66 @@ app.get("/selectFavorites", (request, response) => {
 
 app.post("/favorites", (request, response) => {
   let {favPlayer} = request.body;
+  async function addGolfers(golfers) {
+    
+    try {
+      await client.connect();
+      
+      await insertGolfers(client, database, golfers);
 
-  console.log(favPlayer);
-  response.render("index")
+    } catch (e) {
+      console.error(e);
+    } finally {
+      await client.close();
+    }
+
+  }
+  let golfers = [];
+  favPlayer.forEach((name) => {
+    let golfer = {
+      lastName: name.toUpperCase(),
+      tourneys: playerTourneys[name]
+    };
+    golfers.push(golfer);
+
+  })
+    
+  addGolfers(golfers);
+  const variables = {
+    added: makeList(golfers)
+    
+  };
+
+  response.render("processFavorites.ejs",variables);
 });
+
+async function insertGolfers(client, databaseAndCollection, golfers) {
+  const result = await client.db(databaseAndCollection.db)
+                      .collection(databaseAndCollection.collection)
+                      .insertMany(golfers);
+
+  console.log(`Inserted ${result.insertedCount} golfers`);
+}
+
+function makeList(golfers) {
+  let res ="<ul>"
+  golfers.forEach((golfer) => {
+    res+= `<li>${golfer.lastName}</li>`
+  });
+  res += "</ul>";
+  return res;
+}
+async function deleteAll() {
+  
+  try {
+      await client.connect();
+      const result = await client.db(database.db)
+      .collection(database.collection)
+      .deleteMany({});
+      console.log(`Deleted documents ${result.deletedCount}`);
+  } catch (e) {
+      console.error(e);
+  } finally {
+      await client.close();
+  }
+}

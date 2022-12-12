@@ -46,4 +46,6 @@ function getUpcomingTournaments(tourneys, id) {
 
 	})
 }
+
+
 module.exports = {getUpcomingTournaments};
