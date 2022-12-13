@@ -38,7 +38,7 @@ app.set("view engine", "ejs");
 app.get("/", (request, response) => {
 
   //Noting upcoming tournamens for players
-  if (Object.keys(playerTourneys).length === 0) {
+  
     let tourneys = {
       "mcilroy":[],
       "thomas":[],
@@ -58,9 +58,7 @@ app.get("/", (request, response) => {
       playerTourneys = res;
       
       }).then(() => response.render("index"))
-  } else {
-    response.render("index")
-  }
+  
 });
   
 
