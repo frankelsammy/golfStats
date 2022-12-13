@@ -7,7 +7,7 @@ const { response } = require('express');
 const app = express();
 const mod = require("./modules/getRankings");
 const tournaments = require("./modules/getTourneys");
-let foundTournaments = false
+
 let playerTourneys = {}
 const { MongoClient, ServerApiVersion } = require('mongodb');
 require("dotenv").config({ path: path.resolve(__dirname, '.env') })
@@ -38,7 +38,7 @@ app.set("view engine", "ejs");
 app.get("/", (request, response) => {
 
   //Noting upcoming tournamens for players
-  if (!foundTournaments) {
+  if (Object.keys(playerTourneys).length === 0) {
     let tourneys = {
       "mcilroy":[],
       "thomas":[],
@@ -56,7 +56,7 @@ app.get("/", (request, response) => {
       return tournaments.getUpcomingTournaments(res, 379)
     }).then((res)=>{
       playerTourneys = res;
-      //foundTournaments = true
+      
       }).then(() => response.render("index"))
   } else {
     response.render("index")
