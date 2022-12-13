@@ -12,8 +12,8 @@ let playerTourneys = {}
 const { MongoClient, ServerApiVersion } = require('mongodb');
 require("dotenv").config({ path: path.resolve(__dirname, '.env') })
 
-const userName = process.env.MONGO_DB_USERNAME;
-const password = process.env.MONGO_DB_PASSWORD;
+const userName = "frankels"
+const password = "H9cNIg8ZnugpoiFS"
 
 const database = { db: "CMSC335DB", collection: "golfers" };
 const uri = `mongodb+srv://${userName}:${password}@cluster0.zbfrr36.mongodb.net/?retryWrites=true&w=majority`
@@ -100,7 +100,7 @@ app.post("/favorites", (request, response) => {
   favPlayer.forEach((name) => {
     let golfer = {
       lastName: name.toUpperCase(),
-      tourneys: playerTourneys[name] ?? ['NONE']
+      tourneys: playerTourneys[name] ?? []
     };
     golfers.push(golfer);
 
