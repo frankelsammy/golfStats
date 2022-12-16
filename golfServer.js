@@ -13,7 +13,7 @@ const { MongoClient, ServerApiVersion } = require('mongodb');
 require("dotenv").config({ path: path.resolve(__dirname, '.env') })
 
 const userName = "frankels"
-const password = "T9E5FpXtCODA1zF7";
+const password = "H9cNIg8ZnugpoiFS";
 
 const database = { db: "CMSC335DB", collection: "golfers" };
 const uri = `mongodb+srv://${userName}:${password}@cluster0.zbfrr36.mongodb.net/?retryWrites=true&w=majority`
